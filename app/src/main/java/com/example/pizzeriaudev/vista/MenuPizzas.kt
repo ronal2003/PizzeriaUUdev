@@ -47,6 +47,7 @@ class MenuPizzas : AppCompatActivity() {
 
         obtenerPizzas.obtenerPizzas()
             .enqueue(object : Callback<List<Pizza>> {
+                @SuppressLint("SuspiciousIndentation")
                 override fun onResponse(
                     call: Call<List<Pizza>>,
                     response: Response<List<Pizza>>
@@ -70,7 +71,7 @@ class MenuPizzas : AppCompatActivity() {
                 }
 
                 override fun onFailure(call: Call<List<Pizza>>, t: Throwable) {
-                     Log.e(TAG, "Error al obtener la descripcion del pokemon")
+                     Log.e(TAG, "Error al obtener las pizzas")
                 }
             })
 
@@ -86,13 +87,19 @@ class MenuPizzas : AppCompatActivity() {
     private fun crearBoton(pizza: Pizza) {
         val button = Button(this)
         button.text = "${pizza.name}"
-        button.setOnClickListener {
-            //Toast.makeText(this, "${pizza.name}", Toast.LENGTH_SHORT).show()
-            val intent = Intent(this, DescripcionPizza::class.java)
-               intent.putExtra("url",pizza.id)
-             intent.putExtra("name",pizza.name)
-              startActivity(intent)
+        try{
+            button.setOnClickListener {
+                //Toast.makeText(this, "${pizza.name}", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, DescripcionPizza::class.java)
+                intent.putExtra("url",pizza.id)
+                intent.putExtra("name",pizza.name)
+                startActivity(intent)
+            }
+            layout_boton_pizza.addView(button)
+        }catch (e: Exception){
+            println("a susedido un error "+e)
         }
-         layout_boton_pizza.addView(button)
+
+
     }
 }
